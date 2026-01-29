@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Heilige Stätten Indiens – für Rena</title>
+  
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700;900&family=Cormorant+Garamond:ital,wght@0,400;1,500&family=Playfair+Display+SC:wght@700&display=swap" rel="stylesheet">
+
+  <style>
+    body {
+      font-family: 'Cormorant Garamond', serif;
+      background: #0d0a0f url('images/hintergrund-lilien.png') no-repeat center center fixed;
+      background-size: cover;
+      color: #e0d4c2;
+      line-height: 1.7;
+      padding: 40px 20px;
+      max-width: 1000px;
+      margin: 0 auto;
+      position: relative;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background: linear-gradient(to bottom, rgba(13,10,15,0.68), rgba(13,10,15,0.88));
+      z-index: -2;
+    }
+
+    body::after {
+      content: "";
+      position: fixed;
+      inset: 0;
+      backdrop-filter: blur(1.5px);
+      z-index: -1;
+    }
+
+    main {
+      background: rgba(253,246,227,0.90);
+      border-radius: 16px;
+      padding: 35px;
+      box-shadow: 0 12px 40px rgba(0,0,0,0.5);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+    }
+
+    h1 {
+      font-family: 'Cinzel Decorative', serif;
+      color: #d4af37;
+      text-align: center;
+      text-shadow: 0 0 15px rgba(212,175,55,0.8);
+      margin-bottom: 40px;
+    }
+
+    /* Pergament-Rolle */
+    .temple {
+      position: relative;
+      margin: 40px 0;
+      cursor: pointer;
+      perspective: 1200px;
+      background: #f8f0e0;
+      border-radius: 12px 12px 0 0;
+      overflow: hidden;
+      box-shadow: inset 0 0 40px rgba(139,69,19,0.2), 0 10px 30px rgba(0,0,0,0.4);
+      transition: all 1s ease;
+      transform-style: preserve-3d;
+    }
+
+    .temple::before,
+    .temple::after {
+      content: "";
+      position: absolute;
+      left: 0; right: 0;
+      height: 24px;
+      background: linear-gradient(to bottom, #d2b48c, #c19a6b);
+      opacity: 0.7;
+      z-index: 2;
+    }
+    .temple::before { top: 0; border-radius: 12px 12px 0 0; }
+    .temple::after { bottom: 0; border-radius: 0 0 12px 12px; }
+
+    .temple.closed {
+      height: 90px;
+      transform: rotateX(20deg) scaleY(0.85);
+      border-radius: 60px / 90px;
+    }
+
+    .temple.open {
+      height: auto;
+      transform: rotateX(0deg) scaleY(1);
+      border-radius: 12px;
+    }
+
+    .temple-content {
+      padding: 25px;
+      opacity: 0;
+      transform: translateY(-30px);
+      transition: opacity 0.9s ease 0.5s, transform 0.9s ease 0.5s;
+    }
+
+    .temple.open .temple-content {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .temple h2 {
+      font-family: 'Cinzel Decorative', 'Playfair Display SC', serif;
+      font-weight: 900;
+      font-size: 2.2rem;
+      color: #d4af37;
+      text-shadow: 0 0 12px rgba(212,175,55,0.8), 2px 2px 6px rgba(0,0,0,0.7);
+      margin: 0;
+      padding: 20px;
+      text-align: center;
+      letter-spacing: 2px;
+    }
+
+    .teaser {
+      font-style: italic;
+      font-weight: 500;
+      font-size: 1.18rem;
+      color: #c9a87c;
+      margin: 0 0 15px 0;
+      text-shadow: 1px 1px 3px rgba(0,0,0,0.4);
+    }
+
+    .details p {
+      margin: 12px 0;
+      font-size: 1.05rem;
+    }
+
+    img {
+      width: 100%;
+      height: auto;
+      border-radius: 10px;
+      margin: 15px 0;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+    }
+
+    .map-link {
+      color: #d4af37;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    /* Elefanten-Toggle */
+    .sound-elephant {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      text-align: center;
+      z-index: 1000;
+    }
+    .sound-elephant img {
+      width: 90px;
+      cursor: pointer;
+      transition: transform 0.6s ease;
+    }
+    .sound-elephant img.active {
+      transform: translateY(-8px);
+    }
+    .sound-hint {
+      font-size: 12px;
+      color: #c9a87c;
+      margin-top: 8px;
+      max-width: 140px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Elefanten-Toggle -->
+  <div class="sound-elephant">
+    <img src="images/elefant-mute.png" alt="Sound aus" id="elephantToggle">
+    <p class="sound-hint">Rüssel hoch = Klang<br>Rüssel runter = Stille</p>
+  </div>
+
+  <audio id="ambientSound" loop>
+    <source src="sound.mp3" type="audio/mpeg">
+  </audio>
+
+  <main>
+
+    <h1>Heilige Stätten Indiens – für Rena</h1>
+
+    <h2>Vorwort</h2>
+    <p>Im nächsten Leben werde ich mit dir all diese heiligen Stätten besuchen. Wir werden barfuß über warmen Marmorboden gehen, den Duft von Jasmin und Weihrauch einatmen und uns inmitten tausend Glockenschläge verlieren. Bis dahin: Dieses Buch ist dein Fenster nach Indien – still, bunt und voller Energie. Als Löwe trägst du die Sonne in dir – und genau deshalb zieht es dich zu Orten, die leuchten.</p>
+
+    <!-- Beispiel-Tempel – kopiere das Pattern für alle 10 -->
+    <div class="temple closed" onclick="toggleDetails(this)">
+      <h2>1. Tirupati Balaji Temple</h2>
+      <div class="temple-content">
+        <p class="teaser">Der reichste Tempel der Welt – Millionen pilgern hierher für Vishnu's Segen. Intensiv, tränenreich, hoffnungsvoll.</p>
+        <div class="details">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/17/Tirumala_Temple_Tirupati.jpg/800px-Tirumala_Temple_Tirupati.jpg" alt="Tirupati Temple">
+          <p>Der reichste und meistbesuchte Hindu-Tempel der Welt. Millionen pilgern hierher, um Vishnu (als Balaji) zu ehren. Die Atmosphäre ist intensiv – voller Hingabe, Tränen und Hoffnung. Täglich werden Millionen Dollar an Spenden gesammelt, die Haare der Pilger werden geschoren als Opfergabe.</p>
+          <p><strong>Ort:</strong> Andhra Pradesh, Südindien</p>
+          <a href="https://maps.app.goo.gl/7GzQxVvJqjDvXWkE8" target="_blank" class="map-link">📍 Auf Google Maps anzeigen</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Füge hier die anderen 9 Tempel ein (gleiches Pattern) + Sternbild als letztes "Tempel"-Div -->
+
+    <div class="temple closed" onclick="toggleDetails(this)">
+      <h2>Ein Sternbild über dieser Reise</h2>
+      <div class="temple-content">
+        <p class="teaser">Das Sternbild Löwe als Orientierung – Stärke, Würde und Wärme aus Licht.</p>
+        <div class="details">
+          <img src="images/leo-constellation.png" alt="Sternbild Löwe">
+          <p>Seit der Antike blicken Menschen auf das Sternbild des Löwen. Nicht als Versprechen, sondern als Orientierung. Ein Muster aus Licht, das Stärke, Würde und Wärme symbolisiert. So wie die Orte in diesem Buch: Sie erklären nichts – sie erinnern.</p>
+        </div>
+      </div>
+    </div>
+
+    <h2>Abschluss</h2>
+    <p>Du musst nicht reisen, um anzukommen. Namaste, Rena. 🌸</p>
+
+  </main>
+
+  <script>
+    function toggleDetails(element) {
+      element.classList.toggle('open');
+      element.classList.toggle('closed');
+      document.querySelectorAll('.temple.open').forEach(el => {
+        if (el !== element) {
+          el.classList.remove('open');
+          el.classList.add('closed');
+        }
+      });
+    }
+
+    const elephant = document.getElementById("elephantToggle");
+    const audio = document.getElementById("ambientSound");
+    let isPlaying = false;
+    audio.volume = 0;
+
+    function fadeIn() {
+      audio.volume = 0;
+      audio.play().catch(() => {});
+      const fade = setInterval(() => {
+        if (audio.volume < 0.8) audio.volume += 0.02;
+        else clearInterval(fade);
+      }, 50);
+    }
+
+    function fadeOut() {
+      const fade = setInterval(() => {
+        if (audio.volume > 0.02) audio.volume -= 0.02;
+        else { clearInterval(fade); audio.pause(); }
+      }, 50);
+    }
+
+    elephant.addEventListener("click", () => {
+      if (!isPlaying) {
+        elephant.src = "images/elefant-unmute.png";
+        elephant.classList.add("active");
+        fadeIn();
+      } else {
+        elephant.src = "images/elefant-mute.png";
+        elephant.classList.remove("active");
+        fadeOut();
+      }
+      isPlaying = !isPlaying;
+    });
+  </script>
+
+</body>
+</html>
